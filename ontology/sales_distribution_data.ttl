@@ -1,0 +1,168 @@
+@prefix sd: <https://abhigya.ai/ontology/sales-distribution#> .
+@prefix sdi: <https://abhigya.ai/ontology/sales-distribution/data#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Sales & Distribution ABox / sample data
+#
+# This file is intentionally a small, curated semantic projection
+# of the B2B_sales_data_structure.xlsx sample rows.
+#
+# It does NOT invent ontology terms for source columns that the
+# current ontology cannot represent safely.
+#
+# Important source-semantic limitations:
+# 1. "Inventory Quantity" is mapped to stockQuantity, not
+#    availableQuantity.
+# 2. Missing inventory rows => zero inventory is a source-system
+#    closed-world rule; it is NOT an OWL inference.
+# 3. "Special price requested" is not asserted as an approved
+#    SpecialPrice.
+# 4. Project is not silently equated with Opportunity.
+# 5. AWB No. is not given a dedicated AWB property because the
+#    current ontology does not define one. The shipment identifier
+#    below is therefore a candidate mapping, not a confirmed
+#    semantic equivalence.
+# 6. Exact transaction-level primary-to-secondary lineage is not
+#    asserted because the workbook does not contain a transaction,
+#    order, lot, batch, or inventory-flow identifier linking them.
+#################################################################
+
+############################
+# Master / partner entities
+############################
+
+sdi:Distributor_ABC
+    a sd:Distributor ;
+    sd:identifier "123" ;
+    sd:name "ABC" .
+
+sdi:ResaleCustomer_DEF
+    a sd:Retailer ;
+    sd:identifier "D123" ;
+    sd:name "DEF" .
+
+sdi:FinalCustomer_GHI
+    a sd:Customer ;
+    sd:identifier "G123" ;
+    sd:name "GHI" .
+
+sdi:Product_P123
+    a sd:Product ;
+    sd:identifier "P123" ;
+    sd:name "P123" .
+
+############################
+# UC-01: Point of Purchase
+############################
+
+sdi:PrimarySale_ABC_P123_202609
+    a sd:PrimarySalesTransaction ;
+    sd:identifier "POP-ABC-P123-202609" ;
+    sd:placedBy sdi:Distributor_ABC ;
+    sd:quantity "500"^^xsd:decimal ;
+    sd:netAmount "12000"^^xsd:decimal .
+
+############################
+# UC-02: Point of Sale
+#
+# The workbook contains partner -> resale customer -> final
+# customer information. The current ontology's SecondarySales-
+# Transaction restriction expects placedBy a Retailer, so this
+# sample uses the resale customer as the Retailer role only for
+# the downstream transaction representation.
+############################
+
+sdi:SecondarySale_DEF_GHI_P123_202609
+    a sd:SecondarySalesTransaction ;
+    sd:identifier "POS-ABC-DEF-GHI-P123-202609" ;
+    sd:placedBy sdi:ResaleCustomer_DEF ;
+    sd:quantity "120"^^xsd:decimal ;
+    sd:netAmount "20000"^^xsd:decimal .
+
+sdi:Distributor_ABC
+    sd:sellsTo sdi:ResaleCustomer_DEF .
+
+############################
+# UC-03: Partner Inventory
+############################
+
+sdi:Inventory_ABC_P123_202609
+    a sd:Inventory ;
+    sd:identifier "INV-ABC-P123-202609" ;
+    sd:ownedBy sdi:Distributor_ABC ;
+    sd:holdsProduct sdi:Product_P123 ;
+    sd:stockQuantity "380"^^xsd:decimal .
+
+############################
+# UC-04: Partner Project / Opportunity
+#
+# The workbook calls this a Project. The current ontology does not
+# define a Project class, so this sample deliberately does NOT type
+# the record as sd:Opportunity. The source record is retained as a
+# source-level note for later ontology-gap analysis.
+############################
+
+sdi:Project_PROJ123
+    sd:identifier "PROJ123" ;
+    sd:name "Wash Machine" ;
+    sd:status "In-Progress" .
+
+############################
+# UC-05: Partner Quote
+############################
+
+sdi:Quotation_PROJ123_202609
+    a sd:Quotation ;
+    sd:identifier "QUOTE-PROJ123-202609" ;
+    sd:name "Wash Machine quote" ;
+    sd:status "Approved" ;
+    sd:quantity "1000000"^^xsd:decimal ;
+    sd:unitPrice "80"^^xsd:decimal .
+
+# Source values retained as comments because the current ontology
+# does not have a semantically confirmed property for them:
+# - special price requested = 40
+# - quote type = BC type
+# - quote validity = 2026-12-31
+# These should be addressed during the ontology gap/refinement step.
+
+############################
+# UC-06: Delivery performance
+############################
+
+sdi:SalesOrder_PO1234
+    a sd:SalesOrder ;
+    sd:identifier "PO1234" ;
+    sd:hasOrderLine sdi:SalesOrderLine_PO1234_1 ;
+    sd:hasDeliveryPromise sdi:DeliveryPromise_PO1234 .
+
+sdi:SalesOrderLine_PO1234_1
+    a sd:SalesOrderLine ;
+    sd:hasProduct sdi:Product_P123 ;
+    sd:quantity "35000"^^xsd:decimal .
+
+sdi:DeliveryPromise_PO1234
+    a sd:DeliveryPromise ;
+    sd:requestedDeliveryDate "2026-11-11T00:00:00"^^xsd:dateTime ;
+    sd:promisedDeliveryDate "2027-03-03T00:00:00"^^xsd:dateTime .
+
+############################
+# UC-07: Shipment tracking
+############################
+
+sdi:Shipment_AWB_123456789
+    a sd:Shipment ;
+    sd:identifier "123456789" .
+
+sdi:GoodsIssue_ABC_P123_20261212
+    a sd:GoodsIssue ;
+    sd:identifier "GI-ABC-P123-20261212" ;
+    sd:actualDeliveryDate "2026-12-12T00:00:00"^^xsd:dateTime .
+
+# Note:
+# The source field is "Actual goods issue date", not actual delivery
+# date. Therefore actualDeliveryDate above is a provisional
+# representation and should NOT be treated as semantically final.
+# The preferred ontology refinement is a dedicated goodsIssueDate
+# property on GoodsIssue.

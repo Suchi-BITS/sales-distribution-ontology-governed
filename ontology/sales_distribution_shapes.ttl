@@ -1,0 +1,199 @@
+@prefix sd: <https://abhigya.ai/ontology/sales-distribution#> .
+@prefix sdi: <https://abhigya.ai/ontology/sales-distribution/data#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Sales & Distribution SHACL validation shapes
+#
+# Important:
+# - OWL defines semantic meaning and logical axioms.
+# - SHACL validates the quality/completeness of the loaded data.
+# - These shapes are deliberately limited to constraints supported
+#   by the current S&D ontology and the B2B sample workbook.
+#################################################################
+
+sd:DistributorShape
+    a sh:NodeShape ;
+    sh:targetClass sd:Distributor ;
+    sh:property [
+        sh:path sd:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A Distributor must have exactly one identifier." ;
+    ] ;
+    sh:property [
+        sh:path sd:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A Distributor must have exactly one name." ;
+    ] .
+
+sd:ProductShape
+    a sh:NodeShape ;
+    sh:targetClass sd:Product ;
+    sh:property [
+        sh:path sd:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A Product must have exactly one identifier." ;
+    ] .
+
+sd:PrimarySalesTransactionShape
+    a sh:NodeShape ;
+    sh:targetClass sd:PrimarySalesTransaction ;
+    sh:property [
+        sh:path sd:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A primary sales transaction must have exactly one identifier." ;
+    ] ;
+    sh:property [
+        sh:path sd:quantity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:message "A primary sales transaction must have one non-negative quantity." ;
+    ] ;
+    sh:property [
+        sh:path sd:netAmount ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:message "A primary sales transaction must have one non-negative net amount." ;
+    ] .
+
+sd:SecondarySalesTransactionShape
+    a sh:NodeShape ;
+    sh:targetClass sd:SecondarySalesTransaction ;
+    sh:property [
+        sh:path sd:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A secondary sales transaction must have exactly one identifier." ;
+    ] ;
+    sh:property [
+        sh:path sd:quantity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:message "A secondary sales transaction must have one non-negative quantity." ;
+    ] ;
+    sh:property [
+        sh:path sd:netAmount ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:message "A secondary sales transaction must have one non-negative net amount." ;
+    ] .
+
+sd:InventoryShape
+    a sh:NodeShape ;
+    sh:targetClass sd:Inventory ;
+    sh:property [
+        sh:path sd:ownedBy ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class sd:BusinessOrganization ;
+        sh:message "Inventory must have exactly one owning business organization." ;
+    ] ;
+    sh:property [
+        sh:path sd:holdsProduct ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class sd:Product ;
+        sh:message "Inventory must identify exactly one product." ;
+    ] ;
+    sh:property [
+        sh:path sd:stockQuantity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:message "Inventory stock quantity must be one non-negative value." ;
+    ] .
+
+sd:QuotationShape
+    a sh:NodeShape ;
+    sh:targetClass sd:Quotation ;
+    sh:property [
+        sh:path sd:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A quotation must have exactly one identifier." ;
+    ] ;
+    sh:property [
+        sh:path sd:status ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A quotation must have exactly one status." ;
+    ] ;
+    sh:property [
+        sh:path sd:quantity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:message "A quotation must have one non-negative quote quantity." ;
+    ] .
+
+sd:DeliveryPromiseShape
+    a sh:NodeShape ;
+    sh:targetClass sd:DeliveryPromise ;
+    sh:property [
+        sh:path sd:requestedDeliveryDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime ;
+        sh:message "A DeliveryPromise must have exactly one requested delivery date." ;
+    ] ;
+    sh:property [
+        sh:path sd:promisedDeliveryDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime ;
+        sh:message "A DeliveryPromise must have exactly one promised/confirmed delivery date." ;
+    ] .
+
+sd:ShipmentShape
+    a sh:NodeShape ;
+    sh:targetClass sd:Shipment ;
+    sh:property [
+        sh:path sd:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A shipment must have exactly one identifier." ;
+    ] .
+
+sd:SalesOrderShape
+    a sh:NodeShape ;
+    sh:targetClass sd:SalesOrder ;
+    sh:property [
+        sh:path sd:hasOrderLine ;
+        sh:minCount 1 ;
+        sh:class sd:SalesOrderLine ;
+        sh:message "A SalesOrder must contain at least one SalesOrderLine." ;
+    ] .
+
+sd:SalesOrderLineShape
+    a sh:NodeShape ;
+    sh:targetClass sd:SalesOrderLine ;
+    sh:property [
+        sh:path sd:hasProduct ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class sd:Product ;
+        sh:message "A SalesOrderLine must reference exactly one Product." ;
+    ] .

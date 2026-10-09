@@ -1,0 +1,724 @@
+@prefix sd: <https://abhigya.ai/ontology/sales-distribution#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Ontology metadata
+#################################################################
+
+sd:SalesDistributionOntology a owl:Ontology ;
+    rdfs:label "Sales and Distribution Management Ontology"@en ;
+    rdfs:comment "A domain ontology for sales, distribution, channel management, primary and secondary sales, inventory, order-to-cash, field sales, trade promotions, collections, returns, and distribution analytics."@en ;
+    owl:versionInfo "1.0.0" .
+
+#################################################################
+# Core organization / channel classes
+#################################################################
+
+sd:BusinessOrganization a owl:Class .
+sd:SalesOrganization a owl:Class ; rdfs:subClassOf sd:BusinessOrganization .
+sd:DistributionNetwork a owl:Class .
+sd:Channel a owl:Class .
+sd:ChannelType a owl:Class .
+sd:ChannelPartner a owl:Class ; rdfs:subClassOf sd:BusinessOrganization .
+sd:Distributor a owl:Class ; rdfs:subClassOf sd:ChannelPartner .
+sd:SuperStockist a owl:Class ; rdfs:subClassOf sd:Distributor .
+sd:Stockist a owl:Class ; rdfs:subClassOf sd:Distributor .
+sd:SubDistributor a owl:Class ; rdfs:subClassOf sd:Distributor .
+sd:Wholesaler a owl:Class ; rdfs:subClassOf sd:ChannelPartner .
+sd:Retailer a owl:Class ; rdfs:subClassOf sd:ChannelPartner .
+sd:ModernTradeRetailer a owl:Class ; rdfs:subClassOf sd:Retailer .
+sd:GeneralTradeRetailer a owl:Class ; rdfs:subClassOf sd:Retailer .
+sd:InstitutionalCustomer a owl:Class ; rdfs:subClassOf sd:ChannelPartner .
+sd:EcommerceChannel a owl:Class ; rdfs:subClassOf sd:Channel .
+sd:DirectSalesChannel a owl:Class ; rdfs:subClassOf sd:Channel .
+sd:DistributorChannel a owl:Class ; rdfs:subClassOf sd:Channel .
+sd:Geography a owl:Class .
+sd:Region a owl:Class ; rdfs:subClassOf sd:Geography .
+sd:Zone a owl:Class ; rdfs:subClassOf sd:Geography .
+sd:Territory a owl:Class ; rdfs:subClassOf sd:Geography .
+sd:District a owl:Class ; rdfs:subClassOf sd:Geography .
+sd:Market a owl:Class .
+sd:Route a owl:Class .
+sd:Beat a owl:Class ; rdfs:subClassOf sd:Route .
+sd:Outlet a owl:Class ; rdfs:subClassOf sd:Retailer .
+
+#################################################################
+# People / sales force
+#################################################################
+
+sd:Person a owl:Class .
+sd:Employee a owl:Class ; rdfs:subClassOf sd:Person .
+sd:SalesEmployee a owl:Class ; rdfs:subClassOf sd:Employee .
+sd:SalesRepresentative a owl:Class ; rdfs:subClassOf sd:SalesEmployee .
+sd:SalesManager a owl:Class ; rdfs:subClassOf sd:SalesEmployee .
+sd:TerritoryManager a owl:Class ; rdfs:subClassOf sd:SalesManager .
+sd:DistributorSalesperson a owl:Class ; rdfs:subClassOf sd:SalesEmployee .
+sd:FieldSalesRep a owl:Class ; rdfs:subClassOf sd:SalesRepresentative .
+sd:SalesVisit a owl:Class .
+sd:JourneyPlan a owl:Class .
+sd:VisitPlan a owl:Class .
+sd:Attendance a owl:Class .
+
+#################################################################
+# Customer / account / partner master
+#################################################################
+
+sd:Customer a owl:Class .
+sd:CustomerAccount a owl:Class .
+sd:BillToParty a owl:Class ; rdfs:subClassOf sd:Customer .
+sd:ShipToParty a owl:Class ; rdfs:subClassOf sd:Customer .
+sd:SoldToParty a owl:Class ; rdfs:subClassOf sd:Customer .
+sd:Payer a owl:Class ; rdfs:subClassOf sd:Customer .
+sd:PartnerRelationship a owl:Class .
+sd:DistributorAppointment a owl:Class ; rdfs:subClassOf sd:PartnerRelationship .
+sd:ChannelAgreement a owl:Class ; rdfs:subClassOf sd:PartnerRelationship .
+sd:CreditProfile a owl:Class .
+sd:CreditLimit a owl:Class .
+sd:PaymentTerm a owl:Class .
+sd:CustomerSegment a owl:Class .
+sd:CustomerClassification a owl:Class .
+
+#################################################################
+# Product / material master
+#################################################################
+
+sd:Product a owl:Class .
+sd:ProductCategory a owl:Class .
+sd:ProductBrand a owl:Class .
+sd:ProductVariant a owl:Class ; rdfs:subClassOf sd:Product .
+sd:SKU a owl:Class ; rdfs:subClassOf sd:Product .
+sd:ProductPack a owl:Class .
+sd:ProductHierarchy a owl:Class .
+sd:ProductBundle a owl:Class ; rdfs:subClassOf sd:Product .
+sd:UnitOfMeasure a owl:Class .
+sd:ConversionFactor a owl:Class .
+sd:Batch a owl:Class .
+sd:Lot a owl:Class .
+sd:SerialNumber a owl:Class .
+sd:ExpiryDate a owl:Class .
+sd:ShelfLifePolicy a owl:Class .
+
+#################################################################
+# Sales process
+#################################################################
+
+sd:SalesProcess a owl:Class .
+sd:Lead a owl:Class .
+sd:Opportunity a owl:Class .
+sd:Quotation a owl:Class .
+sd:SalesOrder a owl:Class .
+sd:SalesOrderLine a owl:Class .
+sd:PrimarySalesOrder a owl:Class ; rdfs:subClassOf sd:SalesOrder .
+sd:SecondarySalesOrder a owl:Class ; rdfs:subClassOf sd:SalesOrder .
+sd:RetailerOrder a owl:Class ; rdfs:subClassOf sd:SecondarySalesOrder .
+sd:DistributorOrder a owl:Class ; rdfs:subClassOf sd:PrimarySalesOrder .
+sd:PurchaseOrder a owl:Class .
+sd:OrderStatus a owl:Class .
+sd:OrderType a owl:Class .
+sd:OrderSource a owl:Class .
+sd:OrderChannel a owl:Class .
+sd:OrderFulfillment a owl:Class .
+sd:OrderAllocation a owl:Class .
+sd:OrderCommitment a owl:Class .
+sd:OrderException a owl:Class .
+sd:Backorder a owl:Class ; rdfs:subClassOf sd:OrderException .
+sd:OrderCancellation a owl:Class .
+sd:OrderChange a owl:Class .
+sd:OrderHold a owl:Class .
+sd:AvailabilityCheck a owl:Class .
+sd:AvailableToPromise a owl:Class .
+sd:DeliveryPromise a owl:Class .
+
+#################################################################
+# Pricing / promotions / commercial programs
+#################################################################
+
+sd:PriceList a owl:Class .
+sd:Price a owl:Class .
+sd:BasePrice a owl:Class ; rdfs:subClassOf sd:Price .
+sd:DistributorPrice a owl:Class ; rdfs:subClassOf sd:Price .
+sd:RetailPrice a owl:Class ; rdfs:subClassOf sd:Price .
+sd:SpecialPrice a owl:Class ; rdfs:subClassOf sd:Price .
+sd:Discount a owl:Class .
+sd:DiscountRule a owl:Class .
+sd:TradePromotion a owl:Class .
+sd:PromotionScheme a owl:Class ; rdfs:subClassOf sd:TradePromotion .
+sd:ConsumerPromotion a owl:Class ; rdfs:subClassOf sd:TradePromotion .
+sd:TradeAllowance a owl:Class .
+sd:RebateProgram a owl:Class .
+sd:RebateClaim a owl:Class .
+sd:SchemeClaim a owl:Class .
+sd:PromotionEligibility a owl:Class .
+sd:PromotionPeriod a owl:Class .
+sd:FreeGoodsRule a owl:Class .
+sd:TargetAchievementRule a owl:Class .
+
+#################################################################
+# Distribution / fulfillment / logistics
+#################################################################
+
+sd:DistributionCenter a owl:Class .
+sd:Depot a owl:Class ; rdfs:subClassOf sd:DistributionCenter .
+sd:Warehouse a owl:Class .
+sd:StorageLocation a owl:Class .
+sd:DeliveryPoint a owl:Class .
+sd:Shipment a owl:Class .
+sd:ShipmentLine a owl:Class .
+sd:Delivery a owl:Class .
+sd:DeliveryRoute a owl:Class .
+sd:Vehicle a owl:Class .
+sd:Driver a owl:Class ; rdfs:subClassOf sd:Person .
+sd:Transporter a owl:Class ; rdfs:subClassOf sd:BusinessOrganization .
+sd:DeliveryTrip a owl:Class .
+sd:ProofOfDelivery a owl:Class .
+sd:GoodsIssue a owl:Class .
+sd:GoodsReceipt a owl:Class .
+sd:StockTransfer a owl:Class .
+sd:InterDepotTransfer a owl:Class ; rdfs:subClassOf sd:StockTransfer .
+sd:DistributorReplenishment a owl:Class .
+sd:RoutePlan a owl:Class .
+
+#################################################################
+# Inventory
+#################################################################
+
+sd:Inventory a owl:Class .
+sd:InventoryPosition a owl:Class .
+sd:OnHandInventory a owl:Class ; rdfs:subClassOf sd:InventoryPosition .
+sd:AvailableInventory a owl:Class ; rdfs:subClassOf sd:InventoryPosition .
+sd:ReservedInventory a owl:Class ; rdfs:subClassOf sd:InventoryPosition .
+sd:BlockedInventory a owl:Class ; rdfs:subClassOf sd:InventoryPosition .
+sd:DamagedInventory a owl:Class ; rdfs:subClassOf sd:InventoryPosition .
+sd:InTransitInventory a owl:Class ; rdfs:subClassOf sd:InventoryPosition .
+sd:SafetyStock a owl:Class .
+sd:ReorderPoint a owl:Class .
+sd:MinimumStockLevel a owl:Class .
+sd:MaximumStockLevel a owl:Class .
+sd:StockMovement a owl:Class .
+sd:StockAdjustment a owl:Class ; rdfs:subClassOf sd:StockMovement .
+sd:StockReservation a owl:Class ; rdfs:subClassOf sd:StockMovement .
+sd:StockAllocation a owl:Class ; rdfs:subClassOf sd:StockMovement .
+sd:CycleCount a owl:Class .
+sd:StockTake a owl:Class .
+sd:ExpiryStock a owl:Class .
+sd:NearExpiryStock a owl:Class .
+sd:FEFOPolicy a owl:Class .
+sd:FIFOPolicy a owl:Class .
+
+#################################################################
+# Invoicing / payments / collections
+#################################################################
+
+sd:Invoice a owl:Class .
+sd:InvoiceLine a owl:Class .
+sd:CreditNote a owl:Class .
+sd:DebitNote a owl:Class .
+sd:TaxInvoice a owl:Class ; rdfs:subClassOf sd:Invoice .
+sd:Payment a owl:Class .
+sd:PaymentMethod a owl:Class .
+sd:PaymentTermDefinition a owl:Class .
+sd:Collection a owl:Class .
+sd:CollectionReceipt a owl:Class .
+sd:OutstandingBalance a owl:Class .
+sd:AccountsReceivable a owl:Class .
+sd:OverdueReceivable a owl:Class ; rdfs:subClassOf sd:AccountsReceivable .
+sd:CreditExposure a owl:Class .
+sd:CreditBlock a owl:Class .
+sd:Settlement a owl:Class .
+sd:Deduction a owl:Class .
+
+#################################################################
+# Returns / reverse distribution
+#################################################################
+
+sd:ReturnOrder a owl:Class .
+sd:ReturnOrderLine a owl:Class .
+sd:ReturnReason a owl:Class .
+sd:ReturnAuthorization a owl:Class .
+sd:ReturnReceipt a owl:Class .
+sd:ReplacementOrder a owl:Class ; rdfs:subClassOf sd:SalesOrder .
+sd:ReverseLogistics a owl:Class .
+sd:DamageClaim a owl:Class .
+sd:ExpiryClaim a owl:Class .
+
+#################################################################
+# Forecasting / targets / performance
+#################################################################
+
+sd:SalesTarget a owl:Class .
+sd:VolumeTarget a owl:Class ; rdfs:subClassOf sd:SalesTarget .
+sd:RevenueTarget a owl:Class ; rdfs:subClassOf sd:SalesTarget .
+sd:OutletCoverageTarget a owl:Class ; rdfs:subClassOf sd:SalesTarget .
+sd:Forecast a owl:Class .
+sd:SalesForecast a owl:Class ; rdfs:subClassOf sd:Forecast .
+sd:DemandSignal a owl:Class .
+sd:SalesActual a owl:Class .
+sd:SalesKPI a owl:Class .
+sd:DistributionKPI a owl:Class .
+sd:ServiceLevel a owl:Class .
+sd:FillRate a owl:Class ; rdfs:subClassOf sd:ServiceLevel .
+sd:OnTimeDeliveryRate a owl:Class ; rdfs:subClassOf sd:ServiceLevel .
+sd:NumericDistribution a owl:Class .
+sd:WeightedDistribution a owl:Class .
+sd:MarketShare a owl:Class .
+
+#################################################################
+# Compliance / audit / master data
+#################################################################
+
+sd:BusinessRule a owl:Class .
+sd:ApprovalRule a owl:Class ; rdfs:subClassOf sd:BusinessRule .
+sd:PricingRule a owl:Class ; rdfs:subClassOf sd:BusinessRule .
+sd:CreditRule a owl:Class ; rdfs:subClassOf sd:BusinessRule .
+sd:AllocationRule a owl:Class ; rdfs:subClassOf sd:BusinessRule .
+sd:TerritoryRule a owl:Class ; rdfs:subClassOf sd:BusinessRule .
+sd:TaxRule a owl:Class ; rdfs:subClassOf sd:BusinessRule .
+sd:AuditEvent a owl:Class .
+sd:User a owl:Class .
+sd:Role a owl:Class .
+sd:Permission a owl:Class .
+sd:MasterDataEntity a owl:Class .
+sd:IntegrationEvent a owl:Class .
+sd:ExternalSystem a owl:Class .
+sd:ERPSystem a owl:Class ; rdfs:subClassOf sd:ExternalSystem .
+sd:SCMSystem a owl:Class ; rdfs:subClassOf sd:ExternalSystem .
+sd:CRMSystem a owl:Class ; rdfs:subClassOf sd:ExternalSystem .
+sd:POSSystem a owl:Class ; rdfs:subClassOf sd:ExternalSystem .
+sd:ECommerceSystem a owl:Class ; rdfs:subClassOf sd:ExternalSystem .
+
+#################################################################
+# Primary / secondary sales semantics
+#################################################################
+
+sd:PrimarySale a owl:Class .
+sd:SecondarySale a owl:Class .
+sd:TertiarySale a owl:Class .
+sd:PrimarySalesTransaction a owl:Class ; rdfs:subClassOf sd:PrimarySale .
+sd:SecondarySalesTransaction a owl:Class ; rdfs:subClassOf sd:SecondarySale .
+sd:TertiarySalesTransaction a owl:Class ; rdfs:subClassOf sd:TertiarySale .
+
+sd:PrimarySale rdfs:comment "Sale from manufacturer/brand owner to distributor, super-stockist, stockist or another first-level channel partner."@en .
+sd:SecondarySale rdfs:comment "Sale from distributor/stockist to retailer or downstream channel partner."@en .
+sd:TertiarySale rdfs:comment "Sale from retailer/channel outlet to the final consumer; terminology varies by industry."@en .
+
+#################################################################
+# Object properties
+#################################################################
+
+sd:hasChannelPartner a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:ChannelPartner .
+
+sd:hasDistributor a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:Distributor .
+
+sd:hasSuperStockist a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:SuperStockist .
+
+sd:hasRetailer a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:Retailer .
+
+sd:belongsToNetwork a owl:ObjectProperty ;
+    rdfs:domain sd:ChannelPartner ; rdfs:range sd:DistributionNetwork .
+
+sd:operatesIn a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:Geography .
+
+sd:servesTerritory a owl:ObjectProperty ;
+    rdfs:domain sd:SalesEmployee ; rdfs:range sd:Territory .
+
+sd:assignedTo a owl:ObjectProperty ;
+    rdfs:range sd:Employee .
+
+sd:manages a owl:ObjectProperty ;
+    rdfs:domain sd:Employee .
+
+sd:hasCustomerAccount a owl:ObjectProperty ;
+    rdfs:domain sd:Customer ; rdfs:range sd:CustomerAccount .
+
+sd:hasCreditProfile a owl:ObjectProperty ;
+    rdfs:domain sd:Customer ; rdfs:range sd:CreditProfile .
+
+sd:hasCreditLimit a owl:ObjectProperty ;
+    rdfs:domain sd:CreditProfile ; rdfs:range sd:CreditLimit .
+
+sd:hasPaymentTerm a owl:ObjectProperty ;
+    rdfs:domain sd:Customer ; rdfs:range sd:PaymentTerm .
+
+sd:hasProduct a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrderLine ; rdfs:range sd:Product .
+
+sd:containsProduct a owl:ObjectProperty ;
+    rdfs:domain sd:ProductBundle ; rdfs:range sd:Product .
+
+sd:belongsToCategory a owl:ObjectProperty ;
+    rdfs:domain sd:Product ; rdfs:range sd:ProductCategory .
+
+sd:hasBrand a owl:ObjectProperty ;
+    rdfs:domain sd:Product ; rdfs:range sd:ProductBrand .
+
+sd:hasSKU a owl:ObjectProperty ;
+    rdfs:domain sd:Product ; rdfs:range sd:SKU .
+
+sd:usesUOM a owl:ObjectProperty ;
+    rdfs:domain sd:Product ; rdfs:range sd:UnitOfMeasure .
+
+sd:hasBatch a owl:ObjectProperty ;
+    rdfs:domain sd:Product ; rdfs:range sd:Batch .
+
+sd:hasLot a owl:ObjectProperty ;
+    rdfs:domain sd:Product ; rdfs:range sd:Lot .
+
+sd:placedBy a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:Customer .
+
+sd:placedWith a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:BusinessOrganization .
+
+sd:hasOrderLine a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:SalesOrderLine .
+
+sd:referencesOrder a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrderLine ; rdfs:range sd:SalesOrder .
+
+sd:generatedFrom a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:Quotation .
+
+sd:hasOrderType a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:OrderType .
+
+sd:hasOrderSource a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:OrderSource .
+
+sd:capturedThrough a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:OrderChannel .
+
+sd:fulfilledBy a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:OrderFulfillment .
+
+sd:hasAllocation a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:OrderAllocation .
+
+sd:hasCommitment a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:OrderCommitment .
+
+sd:hasException a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:OrderException .
+
+sd:checksAvailability a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:AvailabilityCheck .
+
+sd:hasDeliveryPromise a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:DeliveryPromise .
+
+sd:sellsTo a owl:ObjectProperty ;
+    rdfs:domain sd:Distributor ; rdfs:range sd:Retailer .
+
+sd:supplies a owl:ObjectProperty ;
+    rdfs:domain sd:Distributor ; rdfs:range sd:Retailer .
+
+sd:suppliedBy a owl:ObjectProperty ;
+    rdfs:domain sd:Retailer ; rdfs:range sd:Distributor .
+
+sd:distributesTo a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:ChannelPartner .
+
+sd:distributesProduct a owl:ObjectProperty ;
+    rdfs:domain sd:Distributor ; rdfs:range sd:Product .
+
+sd:appointedBy a owl:ObjectProperty ;
+    rdfs:domain sd:DistributorAppointment ; rdfs:range sd:BusinessOrganization .
+
+sd:appointsDistributor a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:Distributor .
+
+sd:hasAgreement a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:ChannelAgreement .
+
+sd:hasPriceList a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:PriceList .
+
+sd:hasPrice a owl:ObjectProperty ;
+    rdfs:domain sd:PriceList ; rdfs:range sd:Price .
+
+sd:appliesToProduct a owl:ObjectProperty ;
+    rdfs:domain sd:Price ; rdfs:range sd:Product .
+
+sd:appliesToCustomer a owl:ObjectProperty ;
+    rdfs:domain sd:Price ; rdfs:range sd:Customer .
+
+sd:hasDiscount a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrderLine ; rdfs:range sd:Discount .
+
+sd:hasPromotion a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:TradePromotion .
+
+sd:hasScheme a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:PromotionScheme .
+
+sd:eligibleFor a owl:ObjectProperty ;
+    rdfs:domain sd:Customer ; rdfs:range sd:PromotionEligibility .
+
+sd:generatesClaim a owl:ObjectProperty ;
+    rdfs:domain sd:PromotionScheme ; rdfs:range sd:SchemeClaim .
+
+sd:hasRebateProgram a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:RebateProgram .
+
+sd:generatesRebateClaim a owl:ObjectProperty ;
+    rdfs:domain sd:TradePromotion ; rdfs:range sd:RebateClaim .
+
+sd:storedAt a owl:ObjectProperty ;
+    rdfs:domain sd:Inventory ; rdfs:range sd:StorageLocation .
+
+sd:ownedBy a owl:ObjectProperty ;
+    rdfs:domain sd:Inventory ; rdfs:range sd:BusinessOrganization .
+
+sd:holdsProduct a owl:ObjectProperty ;
+    rdfs:domain sd:Inventory ; rdfs:range sd:Product .
+
+sd:hasInventoryPosition a owl:ObjectProperty ;
+    rdfs:domain sd:Inventory ; rdfs:range sd:InventoryPosition .
+
+sd:reserves a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:Inventory .
+
+sd:allocatedFrom a owl:ObjectProperty ;
+    rdfs:domain sd:OrderAllocation ; rdfs:range sd:Inventory .
+
+sd:movesInventory a owl:ObjectProperty ;
+    rdfs:domain sd:StockMovement ; rdfs:range sd:Inventory .
+
+sd:fromLocation a owl:ObjectProperty ;
+    rdfs:domain sd:StockTransfer ; rdfs:range sd:StorageLocation .
+
+sd:toLocation a owl:ObjectProperty ;
+    rdfs:domain sd:StockTransfer ; rdfs:range sd:StorageLocation .
+
+sd:shipsFrom a owl:ObjectProperty ;
+    rdfs:domain sd:Shipment ; rdfs:range sd:StorageLocation .
+
+sd:shipsTo a owl:ObjectProperty ;
+    rdfs:domain sd:Shipment ; rdfs:range sd:DeliveryPoint .
+
+sd:containsShipmentLine a owl:ObjectProperty ;
+    rdfs:domain sd:Shipment ; rdfs:range sd:ShipmentLine .
+
+sd:delivers a owl:ObjectProperty ;
+    rdfs:domain sd:Delivery ; rdfs:range sd:SalesOrder .
+
+sd:usesVehicle a owl:ObjectProperty ;
+    rdfs:domain sd:DeliveryTrip ; rdfs:range sd:Vehicle .
+
+sd:hasDriver a owl:ObjectProperty ;
+    rdfs:domain sd:DeliveryTrip ; rdfs:range sd:Driver .
+
+sd:hasProofOfDelivery a owl:ObjectProperty ;
+    rdfs:domain sd:Delivery ; rdfs:range sd:ProofOfDelivery .
+
+sd:invoicedBy a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:Invoice .
+
+sd:hasInvoiceLine a owl:ObjectProperty ;
+    rdfs:domain sd:Invoice ; rdfs:range sd:InvoiceLine .
+
+sd:forCustomer a owl:ObjectProperty ;
+    rdfs:domain sd:Invoice ; rdfs:range sd:Customer .
+
+sd:hasPayment a owl:ObjectProperty ;
+    rdfs:domain sd:Invoice ; rdfs:range sd:Payment .
+
+sd:paidBy a owl:ObjectProperty ;
+    rdfs:domain sd:Payment ; rdfs:range sd:Customer .
+
+sd:hasCollection a owl:ObjectProperty ;
+    rdfs:domain sd:Customer ; rdfs:range sd:Collection .
+
+sd:settles a owl:ObjectProperty ;
+    rdfs:domain sd:Settlement ; rdfs:range sd:Invoice .
+
+sd:hasDeduction a owl:ObjectProperty ;
+    rdfs:domain sd:Settlement ; rdfs:range sd:Deduction .
+
+sd:returnsAgainst a owl:ObjectProperty ;
+    rdfs:domain sd:ReturnOrder ; rdfs:range sd:SalesOrder .
+
+sd:hasReturnLine a owl:ObjectProperty ;
+    rdfs:domain sd:ReturnOrder ; rdfs:range sd:ReturnOrderLine .
+
+sd:hasReturnReason a owl:ObjectProperty ;
+    rdfs:domain sd:ReturnOrder ; rdfs:range sd:ReturnReason .
+
+sd:authorizesReturn a owl:ObjectProperty ;
+    rdfs:domain sd:ReturnAuthorization ; rdfs:range sd:ReturnOrder .
+
+sd:receivesReturn a owl:ObjectProperty ;
+    rdfs:domain sd:ReturnReceipt ; rdfs:range sd:ReturnOrder .
+
+sd:hasTarget a owl:ObjectProperty ;
+    rdfs:domain sd:SalesEmployee ; rdfs:range sd:SalesTarget .
+
+sd:hasForecast a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:SalesForecast .
+
+sd:basedOn a owl:ObjectProperty ;
+    rdfs:domain sd:SalesForecast ; rdfs:range sd:DemandSignal .
+
+sd:measuredBy a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:SalesKPI .
+
+sd:hasSalesVisit a owl:ObjectProperty ;
+    rdfs:domain sd:SalesRepresentative ; rdfs:range sd:SalesVisit .
+
+sd:visits a owl:ObjectProperty ;
+    rdfs:domain sd:SalesVisit ; rdfs:range sd:Outlet .
+
+sd:plannedBy a owl:ObjectProperty ;
+    rdfs:domain sd:SalesVisit ; rdfs:range sd:JourneyPlan .
+
+sd:belongsToBeat a owl:ObjectProperty ;
+    rdfs:domain sd:Outlet ; rdfs:range sd:Beat .
+
+sd:hasRoute a owl:ObjectProperty ;
+    rdfs:domain sd:Beat ; rdfs:range sd:Route .
+
+sd:governedBy a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:BusinessRule .
+
+sd:requiresApproval a owl:ObjectProperty ;
+    rdfs:domain sd:SalesOrder ; rdfs:range sd:ApprovalRule .
+
+sd:integratesWith a owl:ObjectProperty ;
+    rdfs:domain sd:BusinessOrganization ; rdfs:range sd:ExternalSystem .
+
+sd:originatesFrom a owl:ObjectProperty ;
+    rdfs:domain sd:IntegrationEvent ; rdfs:range sd:ExternalSystem .
+
+sd:recordedBy a owl:ObjectProperty ;
+    rdfs:domain sd:AuditEvent ; rdfs:range sd:User .
+
+#################################################################
+# Data properties
+#################################################################
+
+sd:identifier a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:externalId a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:name a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:description a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:status a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:code a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:address a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:city a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:state a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:country a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:postalCode a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:latitude a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:longitude a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:phone a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:email a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:taxId a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:gstNumber a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:orderDate a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sd:requestedDeliveryDate a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sd:promisedDeliveryDate a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sd:actualDeliveryDate a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sd:quantity a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:unitPrice a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:grossAmount a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:discountAmount a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:taxAmount a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:netAmount a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:costAmount a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:currency a owl:DatatypeProperty ; rdfs:range xsd:string .
+sd:creditLimitAmount a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:outstandingAmount a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:daysOutstanding a owl:DatatypeProperty ; rdfs:range xsd:integer .
+sd:targetValue a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:actualValue a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:percentage a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:stockQuantity a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:reservedQuantity a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:availableQuantity a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:reorderLevel a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:safetyStockQuantity a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+sd:expiryDate a owl:DatatypeProperty ; rdfs:range xsd:date .
+sd:manufacturingDate a owl:DatatypeProperty ; rdfs:range xsd:date .
+sd:visitDateTime a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sd:sequenceNumber a owl:DatatypeProperty ; rdfs:range xsd:integer .
+sd:priority a owl:DatatypeProperty ; rdfs:range xsd:integer .
+sd:isActive a owl:DatatypeProperty ; rdfs:range xsd:boolean .
+sd:startDate a owl:DatatypeProperty ; rdfs:range xsd:date .
+sd:endDate a owl:DatatypeProperty ; rdfs:range xsd:date .
+sd:createdAt a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+sd:updatedAt a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+
+#################################################################
+# Key semantic axioms
+#################################################################
+
+sd:PrimarySalesTransaction rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty sd:placedBy ;
+    owl:someValuesFrom sd:Distributor
+] .
+
+sd:SecondarySalesTransaction rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty sd:placedBy ;
+    owl:someValuesFrom sd:Retailer
+] .
+
+sd:SalesOrder rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty sd:hasOrderLine ;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger
+] .
+
+sd:SalesOrderLine rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty sd:hasProduct ;
+    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass sd:Product
+] .
+
+sd:Inventory rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty sd:holdsProduct ;
+    owl:someValuesFrom sd:Product
+] .
+
+sd:Distributor rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty sd:belongsToNetwork ;
+    owl:someValuesFrom sd:DistributionNetwork
+] .
+
+#################################################################
+# Suggested taxonomy / module map
+#################################################################
+
+sd:SalesDistributionManagement a owl:Class ;
+    rdfs:comment "Application/domain capability encompassing channel management, sales execution, order management, pricing, trade promotions, distributor operations, inventory visibility, fulfillment, collections, returns, field force and analytics."@en .
+
+sd:OrderManagementModule a owl:Class .
+sd:DistributorManagementModule a owl:Class .
+sd:PrimarySalesModule a owl:Class .
+sd:SecondarySalesModule a owl:Class .
+sd:InventoryManagementModule a owl:Class .
+sd:PricingModule a owl:Class .
+sd:TradePromotionModule a owl:Class .
+sd:FieldSalesModule a owl:Class .
+sd:RouteToMarketModule a owl:Class .
+sd:FulfillmentModule a owl:Class .
+sd:InvoicingModule a owl:Class .
+sd:CollectionsModule a owl:Class .
+sd:ReturnsModule a owl:Class .
+sd:TargetAndForecastModule a owl:Class .
+sd:AnalyticsModule a owl:Class .
+sd:MasterDataModule a owl:Class .
+sd:IntegrationModule a owl:Class .
+sd:SecurityAndAuditModule a owl:Class .
+
+sd:SalesDistributionManagement rdfs:comment "Recommended module decomposition: master data; route-to-market/channel; distributor management; primary sales; secondary sales; order management; pricing; promotions; inventory; fulfillment; invoicing; collections; returns; field force; targets/forecasting; analytics; integrations; security/audit."@en .
