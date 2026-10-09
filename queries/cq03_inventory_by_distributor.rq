@@ -1,0 +1,19 @@
+# CQ-03: Inventory by distributor and product
+
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?inventory ?distributorName ?productName ?stockQuantity
+WHERE {
+  ?inventory a sd:SalesDistributionOntologyInventory ;
+             sd:SalesDistributionOntologyownedBy ?distributor ;
+             sd:SalesDistributionOntologyholdsProduct ?product ;
+             sd:SalesDistributionOntologystockQuantity ?stockQuantity .
+  OPTIONAL { ?distributor sd:SalesDistributionOntologyname ?distributorName }
+  OPTIONAL { ?product sd:SalesDistributionOntologyname ?productName }
+}
+ORDER BY ?distributorName ?productName

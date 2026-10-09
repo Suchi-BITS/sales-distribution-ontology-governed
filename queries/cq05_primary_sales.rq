@@ -1,0 +1,16 @@
+# CQ-05: Primary sales quantities and amounts
+
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?sale ?identifier ?quantity ?amount
+WHERE {
+  ?sale a sd:SalesDistributionOntologyPrimarySalesTransaction .
+  OPTIONAL { ?sale sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?sale sd:SalesDistributionOntologyquantity ?quantity }
+  OPTIONAL { ?sale sd:SalesDistributionOntologynetAmount ?amount }
+}

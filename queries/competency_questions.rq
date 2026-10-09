@@ -1,0 +1,244 @@
+# Sales & Distribution ontology competency-query collection
+# Run each SELECT query separately in Fuseki's query editor.
+# These queries assume the ontology and sample data are loaded into the queried dataset.
+
+# CQ-01: List distributors
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?distributor ?identifier ?name
+WHERE {
+  ?distributor a sd:SalesDistributionOntologyDistributor .
+  OPTIONAL { ?distributor sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?distributor sd:SalesDistributionOntologyname ?name }
+}
+ORDER BY ?name
+
+# CQ-02: List products
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?product ?identifier ?name
+WHERE {
+  ?product a sd:SalesDistributionOntologyProduct .
+  OPTIONAL { ?product sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?product sd:SalesDistributionOntologyname ?name }
+}
+ORDER BY ?name
+
+# CQ-03: Inventory by distributor and product
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?inventory ?distributorName ?productName ?stockQuantity
+WHERE {
+  ?inventory a sd:SalesDistributionOntologyInventory ;
+             sd:SalesDistributionOntologyownedBy ?distributor ;
+             sd:SalesDistributionOntologyholdsProduct ?product ;
+             sd:SalesDistributionOntologystockQuantity ?stockQuantity .
+  OPTIONAL { ?distributor sd:SalesDistributionOntologyname ?distributorName }
+  OPTIONAL { ?product sd:SalesDistributionOntologyname ?productName }
+}
+ORDER BY ?distributorName ?productName
+
+# CQ-04: Distributor-to-resale-customer relationships
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?distributorName ?customerName
+WHERE {
+  ?distributor sd:SalesDistributionOntologysellsTo ?customer .
+  OPTIONAL { ?distributor sd:SalesDistributionOntologyname ?distributorName }
+  OPTIONAL { ?customer sd:SalesDistributionOntologyname ?customerName }
+}
+ORDER BY ?distributorName ?customerName
+
+# CQ-05: Primary sales quantities and amounts
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?sale ?identifier ?quantity ?amount
+WHERE {
+  ?sale a sd:SalesDistributionOntologyPrimarySalesTransaction .
+  OPTIONAL { ?sale sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?sale sd:SalesDistributionOntologyquantity ?quantity }
+  OPTIONAL { ?sale sd:SalesDistributionOntologynetAmount ?amount }
+}
+
+# CQ-06: Secondary sales quantities and amounts
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?sale ?identifier ?quantity ?amount
+WHERE {
+  ?sale a sd:SalesDistributionOntologySecondarySalesTransaction .
+  OPTIONAL { ?sale sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?sale sd:SalesDistributionOntologyquantity ?quantity }
+  OPTIONAL { ?sale sd:SalesDistributionOntologynetAmount ?amount }
+}
+
+# CQ-07: Quotations and their attributes
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?quotation ?identifier ?status ?quantity ?unitPrice
+WHERE {
+  ?quotation a sd:SalesDistributionOntologyQuotation .
+  OPTIONAL { ?quotation sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?quotation sd:SalesDistributionOntologystatus ?status }
+  OPTIONAL { ?quotation sd:SalesDistributionOntologyquantity ?quantity }
+  OPTIONAL { ?quotation sd:SalesDistributionOntologyunitPrice ?unitPrice }
+}
+
+# CQ-08: Sales orders and their products
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?orderIdentifier ?productIdentifier ?quantity
+WHERE {
+  ?order a sd:SalesDistributionOntologySalesOrder ;
+         sd:SalesDistributionOntologyidentifier ?orderIdentifier ;
+         sd:SalesDistributionOntologyhasOrderLine ?line .
+  ?line sd:SalesDistributionOntologyhasProduct ?product .
+  OPTIONAL { ?product sd:SalesDistributionOntologyidentifier ?productIdentifier }
+  OPTIONAL { ?line sd:SalesDistributionOntologyquantity ?quantity }
+}
+
+# CQ-09: Requested and promised delivery dates
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?orderIdentifier ?requestedDate ?promisedDate
+WHERE {
+  ?order a sd:SalesDistributionOntologySalesOrder ;
+         sd:SalesDistributionOntologyidentifier ?orderIdentifier ;
+         sd:SalesDistributionOntologyhasDeliveryPromise ?promise .
+  OPTIONAL { ?promise sd:SalesDistributionOntologyrequestedDeliveryDate ?requestedDate }
+  OPTIONAL { ?promise sd:SalesDistributionOntologypromisedDeliveryDate ?promisedDate }
+}
+
+# CQ-10: Shipment and goods-issue records
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?record ?recordType ?identifier
+WHERE {
+  VALUES ?recordType {
+    sd:SalesDistributionOntologyShipment
+    sd:SalesDistributionOntologyGoodsIssue
+  }
+  ?record a ?recordType .
+  OPTIONAL { ?record sd:SalesDistributionOntologyidentifier ?identifier }
+}
+ORDER BY ?recordType ?identifier
+
+# CQ-11: Inventory records without an explicit owner
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?inventory
+WHERE {
+  ?inventory a sd:SalesDistributionOntologyInventory .
+  FILTER NOT EXISTS {
+    ?inventory sd:SalesDistributionOntologyownedBy ?owner
+  }
+}
+
+# CQ-12: Inventory records with multiple explicit owners
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?inventory (COUNT(DISTINCT ?owner) AS ?ownerCount)
+WHERE {
+  ?inventory a sd:SalesDistributionOntologyInventory ;
+             sd:SalesDistributionOntologyownedBy ?owner .
+}
+GROUP BY ?inventory
+HAVING (COUNT(DISTINCT ?owner) > 1)
+
+# CQ-13: Explicitly declared OWL classes
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?class
+WHERE { ?class a owl:Class }
+ORDER BY ?class
+
+# CQ-14: Explicitly declared object properties
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?property
+WHERE { ?property a owl:ObjectProperty }
+ORDER BY ?property
+
+# CQ-15: Explicitly declared property domains and ranges
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?property ?domain ?range
+WHERE {
+  ?property rdfs:domain ?domain ;
+            rdfs:range ?range .
+}
+ORDER BY ?property

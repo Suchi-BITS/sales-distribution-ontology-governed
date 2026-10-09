@@ -1,0 +1,16 @@
+# CQ-02: List products
+
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?product ?identifier ?name
+WHERE {
+  ?product a sd:SalesDistributionOntologyProduct .
+  OPTIONAL { ?product sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?product sd:SalesDistributionOntologyname ?name }
+}
+ORDER BY ?name

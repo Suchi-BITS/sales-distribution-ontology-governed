@@ -1,0 +1,17 @@
+# CQ-07: Quotations and their attributes
+
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?quotation ?identifier ?status ?quantity ?unitPrice
+WHERE {
+  ?quotation a sd:SalesDistributionOntologyQuotation .
+  OPTIONAL { ?quotation sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?quotation sd:SalesDistributionOntologystatus ?status }
+  OPTIONAL { ?quotation sd:SalesDistributionOntologyquantity ?quantity }
+  OPTIONAL { ?quotation sd:SalesDistributionOntologyunitPrice ?unitPrice }
+}

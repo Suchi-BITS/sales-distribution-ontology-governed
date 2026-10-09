@@ -1,0 +1,16 @@
+# CQ-01: List distributors
+
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?distributor ?identifier ?name
+WHERE {
+  ?distributor a sd:SalesDistributionOntologyDistributor .
+  OPTIONAL { ?distributor sd:SalesDistributionOntologyidentifier ?identifier }
+  OPTIONAL { ?distributor sd:SalesDistributionOntologyname ?name }
+}
+ORDER BY ?name

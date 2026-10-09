@@ -5,27 +5,12 @@
 #################################################################
 # Sales & Distribution ABox / sample data
 #
-# This file is intentionally a small, curated semantic projection
-# of the B2B_sales_data_structure.xlsx sample rows.
+# All ontology classes and properties use the canonical IRIs found
+# in sales_distribution_ontology.ttl:
+# sd:SalesDistributionOntology{TermName}
 #
-# It does NOT invent ontology terms for source columns that the
-# current ontology cannot represent safely.
-#
-# Important source-semantic limitations:
-# 1. "Inventory Quantity" is mapped to stockQuantity, not
-#    availableQuantity.
-# 2. Missing inventory rows => zero inventory is a source-system
-#    closed-world rule; it is NOT an OWL inference.
-# 3. "Special price requested" is not asserted as an approved
-#    SpecialPrice.
-# 4. Project is not silently equated with Opportunity.
-# 5. AWB No. is not given a dedicated AWB property because the
-#    current ontology does not define one. The shipment identifier
-#    below is therefore a candidate mapping, not a confirmed
-#    semantic equivalence.
-# 6. Exact transaction-level primary-to-secondary lineage is not
-#    asserted because the workbook does not contain a transaction,
-#    order, lot, batch, or inventory-flow identifier linking them.
+# Source-semantic limitations are preserved; no unsupported
+# mappings or transaction-level lineage are invented.
 #################################################################
 
 ############################
@@ -33,136 +18,135 @@
 ############################
 
 sdi:Distributor_ABC
-    a sd:Distributor ;
-    sd:identifier "123" ;
-    sd:name "ABC" .
+    a sd:SalesDistributionOntologyDistributor,
+      sd:SalesDistributionOntologyBusinessOrganization ;
+    sd:SalesDistributionOntologyidentifier "123" ;
+    sd:SalesDistributionOntologyname "ABC" .
 
 sdi:ResaleCustomer_DEF
-    a sd:Retailer ;
-    sd:identifier "D123" ;
-    sd:name "DEF" .
+    a sd:SalesDistributionOntologyRetailer ;
+    sd:SalesDistributionOntologyidentifier "D123" ;
+    sd:SalesDistributionOntologyname "DEF" .
 
 sdi:FinalCustomer_GHI
-    a sd:Customer ;
-    sd:identifier "G123" ;
-    sd:name "GHI" .
+    a sd:SalesDistributionOntologyCustomer ;
+    sd:SalesDistributionOntologyidentifier "G123" ;
+    sd:SalesDistributionOntologyname "GHI" .
 
 sdi:Product_P123
-    a sd:Product ;
-    sd:identifier "P123" ;
-    sd:name "P123" .
+    a sd:SalesDistributionOntologyProduct ;
+    sd:SalesDistributionOntologyidentifier "P123" ;
+    sd:SalesDistributionOntologyname "P123" .
 
 ############################
 # UC-01: Point of Purchase
 ############################
 
 sdi:PrimarySale_ABC_P123_202609
-    a sd:PrimarySalesTransaction ;
-    sd:identifier "POP-ABC-P123-202609" ;
-    sd:placedBy sdi:Distributor_ABC ;
-    sd:quantity "500"^^xsd:decimal ;
-    sd:netAmount "12000"^^xsd:decimal .
+    a sd:SalesDistributionOntologyPrimarySalesTransaction ;
+    sd:SalesDistributionOntologyidentifier "POP-ABC-P123-202609" ;
+    sd:SalesDistributionOntologyplacedBy sdi:Distributor_ABC ;
+    sd:SalesDistributionOntologyquantity "500"^^xsd:decimal ;
+    sd:SalesDistributionOntologynetAmount "12000"^^xsd:decimal .
 
 ############################
 # UC-02: Point of Sale
-#
-# The workbook contains partner -> resale customer -> final
-# customer information. The current ontology's SecondarySales-
-# Transaction restriction expects placedBy a Retailer, so this
-# sample uses the resale customer as the Retailer role only for
-# the downstream transaction representation.
 ############################
 
 sdi:SecondarySale_DEF_GHI_P123_202609
-    a sd:SecondarySalesTransaction ;
-    sd:identifier "POS-ABC-DEF-GHI-P123-202609" ;
-    sd:placedBy sdi:ResaleCustomer_DEF ;
-    sd:quantity "120"^^xsd:decimal ;
-    sd:netAmount "20000"^^xsd:decimal .
+    a sd:SalesDistributionOntologySecondarySalesTransaction ;
+    sd:SalesDistributionOntologyidentifier "POS-ABC-DEF-GHI-P123-202609" ;
+    sd:SalesDistributionOntologyplacedBy sdi:ResaleCustomer_DEF ;
+    sd:SalesDistributionOntologyquantity "120"^^xsd:decimal ;
+    sd:SalesDistributionOntologynetAmount "20000"^^xsd:decimal .
 
 sdi:Distributor_ABC
-    sd:sellsTo sdi:ResaleCustomer_DEF .
+    sd:SalesDistributionOntologysellsTo sdi:ResaleCustomer_DEF .
 
 ############################
 # UC-03: Partner Inventory
 ############################
 
 sdi:Inventory_ABC_P123_202609
-    a sd:Inventory ;
-    sd:identifier "INV-ABC-P123-202609" ;
-    sd:ownedBy sdi:Distributor_ABC ;
-    sd:holdsProduct sdi:Product_P123 ;
-    sd:stockQuantity "380"^^xsd:decimal .
+    a sd:SalesDistributionOntologyInventory ;
+    sd:SalesDistributionOntologyidentifier "INV-ABC-P123-202609" ;
+    sd:SalesDistributionOntologyownedBy sdi:Distributor_ABC ;
+    sd:SalesDistributionOntologyholdsProduct sdi:Product_P123 ;
+    sd:SalesDistributionOntologystockQuantity "380"^^xsd:decimal .
 
 ############################
 # UC-04: Partner Project / Opportunity
 #
-# The workbook calls this a Project. The current ontology does not
-# define a Project class, so this sample deliberately does NOT type
-# the record as sd:Opportunity. The source record is retained as a
-# source-level note for later ontology-gap analysis.
+# The source calls this a Project. No ontology class is asserted
+# because the current ontology does not define a confirmed Project
+# class and Project must not silently be equated with Opportunity.
 ############################
 
 sdi:Project_PROJ123
-    sd:identifier "PROJ123" ;
-    sd:name "Wash Machine" ;
-    sd:status "In-Progress" .
+    sd:SalesDistributionOntologyidentifier "PROJ123" ;
+    sd:SalesDistributionOntologyname "Wash Machine" ;
+    sd:SalesDistributionOntologystatus "In-Progress" .
 
 ############################
 # UC-05: Partner Quote
 ############################
 
 sdi:Quotation_PROJ123_202609
-    a sd:Quotation ;
-    sd:identifier "QUOTE-PROJ123-202609" ;
-    sd:name "Wash Machine quote" ;
-    sd:status "Approved" ;
-    sd:quantity "1000000"^^xsd:decimal ;
-    sd:unitPrice "80"^^xsd:decimal .
+    a sd:SalesDistributionOntologyQuotation ;
+    sd:SalesDistributionOntologyidentifier "QUOTE-PROJ123-202609" ;
+    sd:SalesDistributionOntologyname "Wash Machine quote" ;
+    sd:SalesDistributionOntologystatus "Approved" ;
+    sd:SalesDistributionOntologyquantity "1000000"^^xsd:decimal ;
+    sd:SalesDistributionOntologyunitPrice "80"^^xsd:decimal .
 
-# Source values retained as comments because the current ontology
-# does not have a semantically confirmed property for them:
+# Retained as comments because there is no semantically confirmed
+# property for these source fields:
 # - special price requested = 40
 # - quote type = BC type
 # - quote validity = 2026-12-31
-# These should be addressed during the ontology gap/refinement step.
 
 ############################
 # UC-06: Delivery performance
 ############################
 
 sdi:SalesOrder_PO1234
-    a sd:SalesOrder ;
-    sd:identifier "PO1234" ;
-    sd:hasOrderLine sdi:SalesOrderLine_PO1234_1 ;
-    sd:hasDeliveryPromise sdi:DeliveryPromise_PO1234 .
+    a sd:SalesDistributionOntologySalesOrder ;
+    sd:SalesDistributionOntologyidentifier "PO1234" ;
+    sd:SalesDistributionOntologyhasOrderLine sdi:SalesOrderLine_PO1234_1 ;
+    sd:SalesDistributionOntologyhasDeliveryPromise sdi:DeliveryPromise_PO1234 .
 
 sdi:SalesOrderLine_PO1234_1
-    a sd:SalesOrderLine ;
-    sd:hasProduct sdi:Product_P123 ;
-    sd:quantity "35000"^^xsd:decimal .
+    a sd:SalesDistributionOntologySalesOrderLine ;
+    sd:SalesDistributionOntologyhasProduct sdi:Product_P123 ;
+    sd:SalesDistributionOntologyquantity "35000"^^xsd:decimal .
 
 sdi:DeliveryPromise_PO1234
-    a sd:DeliveryPromise ;
-    sd:requestedDeliveryDate "2026-11-11T00:00:00"^^xsd:dateTime ;
-    sd:promisedDeliveryDate "2027-03-03T00:00:00"^^xsd:dateTime .
+    a sd:SalesDistributionOntologyDeliveryPromise ;
+    sd:SalesDistributionOntologyrequestedDeliveryDate "2026-11-11T00:00:00"^^xsd:dateTime ;
+    sd:SalesDistributionOntologypromisedDeliveryDate "2027-03-03T00:00:00"^^xsd:dateTime .
 
 ############################
 # UC-07: Shipment tracking
 ############################
 
 sdi:Shipment_AWB_123456789
-    a sd:Shipment ;
-    sd:identifier "123456789" .
+    a sd:SalesDistributionOntologyShipment ;
+    sd:SalesDistributionOntologyidentifier "123456789" .
 
 sdi:GoodsIssue_ABC_P123_20261212
-    a sd:GoodsIssue ;
-    sd:identifier "GI-ABC-P123-20261212" ;
-    sd:actualDeliveryDate "2026-12-12T00:00:00"^^xsd:dateTime .
+    a sd:SalesDistributionOntologyGoodsIssue ;
+    sd:SalesDistributionOntologyidentifier "GI-ABC-P123-20261212" ;
+    sd:SalesDistributionOntologyactualDeliveryDate "2026-12-12T00:00:00"^^xsd:dateTime .
 
-# Note:
-# The source field is "Actual goods issue date", not actual delivery
-# date. Therefore actualDeliveryDate above is a provisional
-# representation and should NOT be treated as semantically final.
-# The preferred ontology refinement is a dedicated goodsIssueDate
-# property on GoodsIssue.
+# Source field is "Actual goods issue date", not actual delivery date.
+# actualDeliveryDate is a provisional representation and should not
+# be treated as semantically final. Prefer a dedicated goodsIssueDate
+# property on GoodsIssue during ontology refinement.
+#
+# Other limitations:
+# - Inventory Quantity maps to stockQuantity, not availableQuantity.
+# - Missing inventory rows => zero is a source closed-world rule,
+#   not an OWL inference.
+# - "Special price requested" is not asserted as approved SpecialPrice.
+# - AWB number has no confirmed dedicated ontology property.
+# - No exact primary-to-secondary transaction lineage is asserted.

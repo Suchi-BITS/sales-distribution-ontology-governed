@@ -6,54 +6,52 @@
 #################################################################
 # Sales & Distribution SHACL validation shapes
 #
-# Important:
-# - OWL defines semantic meaning and logical axioms.
-# - SHACL validates the quality/completeness of the loaded data.
-# - These shapes are deliberately limited to constraints supported
-#   by the current S&D ontology and the B2B sample workbook.
+# Canonical ontology IRIs use the local-name pattern:
+# sd:SalesDistributionOntology{TermName}
+# All ontology terms below are aligned to those canonical IRIs.
 #################################################################
 
-sd:DistributorShape
+sd:SalesDistributionOntologyDistributorShape
     a sh:NodeShape ;
-    sh:targetClass sd:Distributor ;
+    sh:targetClass sd:SalesDistributionOntologyDistributor ;
     sh:property [
-        sh:path sd:identifier ;
+        sh:path sd:SalesDistributionOntologyidentifier ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A Distributor must have exactly one identifier." ;
     ] ;
     sh:property [
-        sh:path sd:name ;
+        sh:path sd:SalesDistributionOntologyname ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A Distributor must have exactly one name." ;
     ] .
 
-sd:ProductShape
+sd:SalesDistributionOntologyProductShape
     a sh:NodeShape ;
-    sh:targetClass sd:Product ;
+    sh:targetClass sd:SalesDistributionOntologyProduct ;
     sh:property [
-        sh:path sd:identifier ;
+        sh:path sd:SalesDistributionOntologyidentifier ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A Product must have exactly one identifier." ;
     ] .
 
-sd:PrimarySalesTransactionShape
+sd:SalesDistributionOntologyPrimarySalesTransactionShape
     a sh:NodeShape ;
-    sh:targetClass sd:PrimarySalesTransaction ;
+    sh:targetClass sd:SalesDistributionOntologyPrimarySalesTransaction ;
     sh:property [
-        sh:path sd:identifier ;
+        sh:path sd:SalesDistributionOntologyidentifier ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A primary sales transaction must have exactly one identifier." ;
     ] ;
     sh:property [
-        sh:path sd:quantity ;
+        sh:path sd:SalesDistributionOntologyquantity ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:decimal ;
@@ -61,7 +59,7 @@ sd:PrimarySalesTransactionShape
         sh:message "A primary sales transaction must have one non-negative quantity." ;
     ] ;
     sh:property [
-        sh:path sd:netAmount ;
+        sh:path sd:SalesDistributionOntologynetAmount ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:decimal ;
@@ -69,18 +67,18 @@ sd:PrimarySalesTransactionShape
         sh:message "A primary sales transaction must have one non-negative net amount." ;
     ] .
 
-sd:SecondarySalesTransactionShape
+sd:SalesDistributionOntologySecondarySalesTransactionShape
     a sh:NodeShape ;
-    sh:targetClass sd:SecondarySalesTransaction ;
+    sh:targetClass sd:SalesDistributionOntologySecondarySalesTransaction ;
     sh:property [
-        sh:path sd:identifier ;
+        sh:path sd:SalesDistributionOntologyidentifier ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A secondary sales transaction must have exactly one identifier." ;
     ] ;
     sh:property [
-        sh:path sd:quantity ;
+        sh:path sd:SalesDistributionOntologyquantity ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:decimal ;
@@ -88,7 +86,7 @@ sd:SecondarySalesTransactionShape
         sh:message "A secondary sales transaction must have one non-negative quantity." ;
     ] ;
     sh:property [
-        sh:path sd:netAmount ;
+        sh:path sd:SalesDistributionOntologynetAmount ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:decimal ;
@@ -96,25 +94,25 @@ sd:SecondarySalesTransactionShape
         sh:message "A secondary sales transaction must have one non-negative net amount." ;
     ] .
 
-sd:InventoryShape
+sd:SalesDistributionOntologyInventoryShape
     a sh:NodeShape ;
-    sh:targetClass sd:Inventory ;
+    sh:targetClass sd:SalesDistributionOntologyInventory ;
     sh:property [
-        sh:path sd:ownedBy ;
+        sh:path sd:SalesDistributionOntologyownedBy ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:class sd:BusinessOrganization ;
+        sh:class sd:SalesDistributionOntologyBusinessOrganization ;
         sh:message "Inventory must have exactly one owning business organization." ;
     ] ;
     sh:property [
-        sh:path sd:holdsProduct ;
+        sh:path sd:SalesDistributionOntologyholdsProduct ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:class sd:Product ;
+        sh:class sd:SalesDistributionOntologyProduct ;
         sh:message "Inventory must identify exactly one product." ;
     ] ;
     sh:property [
-        sh:path sd:stockQuantity ;
+        sh:path sd:SalesDistributionOntologystockQuantity ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:decimal ;
@@ -122,25 +120,25 @@ sd:InventoryShape
         sh:message "Inventory stock quantity must be one non-negative value." ;
     ] .
 
-sd:QuotationShape
+sd:SalesDistributionOntologyQuotationShape
     a sh:NodeShape ;
-    sh:targetClass sd:Quotation ;
+    sh:targetClass sd:SalesDistributionOntologyQuotation ;
     sh:property [
-        sh:path sd:identifier ;
+        sh:path sd:SalesDistributionOntologyidentifier ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A quotation must have exactly one identifier." ;
     ] ;
     sh:property [
-        sh:path sd:status ;
+        sh:path sd:SalesDistributionOntologystatus ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A quotation must have exactly one status." ;
     ] ;
     sh:property [
-        sh:path sd:quantity ;
+        sh:path sd:SalesDistributionOntologyquantity ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:decimal ;
@@ -148,52 +146,52 @@ sd:QuotationShape
         sh:message "A quotation must have one non-negative quote quantity." ;
     ] .
 
-sd:DeliveryPromiseShape
+sd:SalesDistributionOntologyDeliveryPromiseShape
     a sh:NodeShape ;
-    sh:targetClass sd:DeliveryPromise ;
+    sh:targetClass sd:SalesDistributionOntologyDeliveryPromise ;
     sh:property [
-        sh:path sd:requestedDeliveryDate ;
+        sh:path sd:SalesDistributionOntologyrequestedDeliveryDate ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:dateTime ;
         sh:message "A DeliveryPromise must have exactly one requested delivery date." ;
     ] ;
     sh:property [
-        sh:path sd:promisedDeliveryDate ;
+        sh:path sd:SalesDistributionOntologypromisedDeliveryDate ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:dateTime ;
         sh:message "A DeliveryPromise must have exactly one promised/confirmed delivery date." ;
     ] .
 
-sd:ShipmentShape
+sd:SalesDistributionOntologyShipmentShape
     a sh:NodeShape ;
-    sh:targetClass sd:Shipment ;
+    sh:targetClass sd:SalesDistributionOntologyShipment ;
     sh:property [
-        sh:path sd:identifier ;
+        sh:path sd:SalesDistributionOntologyidentifier ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "A shipment must have exactly one identifier." ;
     ] .
 
-sd:SalesOrderShape
+sd:SalesDistributionOntologySalesOrderShape
     a sh:NodeShape ;
-    sh:targetClass sd:SalesOrder ;
+    sh:targetClass sd:SalesDistributionOntologySalesOrder ;
     sh:property [
-        sh:path sd:hasOrderLine ;
+        sh:path sd:SalesDistributionOntologyhasOrderLine ;
         sh:minCount 1 ;
-        sh:class sd:SalesOrderLine ;
+        sh:class sd:SalesDistributionOntologySalesOrderLine ;
         sh:message "A SalesOrder must contain at least one SalesOrderLine." ;
     ] .
 
-sd:SalesOrderLineShape
+sd:SalesDistributionOntologySalesOrderLineShape
     a sh:NodeShape ;
-    sh:targetClass sd:SalesOrderLine ;
+    sh:targetClass sd:SalesDistributionOntologySalesOrderLine ;
     sh:property [
-        sh:path sd:hasProduct ;
+        sh:path sd:SalesDistributionOntologyhasProduct ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:class sd:Product ;
+        sh:class sd:SalesDistributionOntologyProduct ;
         sh:message "A SalesOrderLine must reference exactly one Product." ;
     ] .

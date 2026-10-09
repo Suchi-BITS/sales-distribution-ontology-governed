@@ -1,0 +1,18 @@
+# CQ-08: Sales orders and their products
+
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?orderIdentifier ?productIdentifier ?quantity
+WHERE {
+  ?order a sd:SalesDistributionOntologySalesOrder ;
+         sd:SalesDistributionOntologyidentifier ?orderIdentifier ;
+         sd:SalesDistributionOntologyhasOrderLine ?line .
+  ?line sd:SalesDistributionOntologyhasProduct ?product .
+  OPTIONAL { ?product sd:SalesDistributionOntologyidentifier ?productIdentifier }
+  OPTIONAL { ?line sd:SalesDistributionOntologyquantity ?quantity }
+}

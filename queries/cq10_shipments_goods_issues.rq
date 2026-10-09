@@ -1,0 +1,19 @@
+# CQ-10: Shipment and goods-issue records
+
+PREFIX sd:   <https://abhigya.ai/ontology/sales-distribution#>
+PREFIX sdi:  <https://abhigya.ai/ontology/sales-distribution/data#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?record ?recordType ?identifier
+WHERE {
+  VALUES ?recordType {
+    sd:SalesDistributionOntologyShipment
+    sd:SalesDistributionOntologyGoodsIssue
+  }
+  ?record a ?recordType .
+  OPTIONAL { ?record sd:SalesDistributionOntologyidentifier ?identifier }
+}
+ORDER BY ?recordType ?identifier

@@ -30,18 +30,20 @@ def main() -> int:
     print(f"Data triples     : {len(data_graph):,}")
     print()
 
+    print("Starting SHACL validation...", flush=True)
     conforms, results_graph, results_text = validate(
-        data_graph,
-        shacl_graph=shapes_graph,
-        ont_graph=ontology_graph,
-        inference="rdfs",
-        abort_on_first=False,
-        allow_infos=True,
-        allow_warnings=True,
-        meta_shacl=False,
-        advanced=False,
-        debug=False,
-    )
+    data_graph,
+    shacl_graph=shapes_graph,
+    #ont_graph=ontology_graph,
+    inference="none",
+    abort_on_first=False,
+    allow_infos=True,
+    allow_warnings=True,
+    meta_shacl=False,
+    advanced=False,
+    debug=False,
+)
+    print("Starting SHACL validation...", flush=True)
 
     print(results_text)
 
